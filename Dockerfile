@@ -1,4 +1,14 @@
 FROM node:16-alpine
-COPY . /src
-WORKDIR /src
-RUN yarn && yarn build 
+
+WORKDIR /usr/src/app
+
+COPY podlet/package*.json ./
+COPY podlet/yarn.lock*.json ./
+
+RUN yarn --cwd podlet install
+
+COPY podlet .
+
+EXPOSE 7100
+
+CMD [ "node", "podlet.js" ]
